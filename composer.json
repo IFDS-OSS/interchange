@@ -1,0 +1,57 @@
+{
+    "name": "ifds-oss/http-adapter",
+    "description": "Driver-based outbound HTTP integration layer for Laravel: fluent client builder, retry/backoff, circuit breaking, lifecycle events, config-driven driver registration.",
+    "keywords": ["laravel", "http", "adapter", "resilience", "circuit-breaker", "retry"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Iman Imen"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.0|^12.0",
+        "illuminate/http": "^11.0|^12.0",
+        "illuminate/contracts": "^11.0|^12.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0|^10.0",
+        "pestphp/pest": "^2.0|^3.0",
+        "pestphp/pest-plugin-laravel": "^2.0|^3.0",
+        "larastan/larastan": "^2.0|^3.0",
+        "laravel/pint": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ifds\\HttpAdapter\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ifds\\HttpAdapter\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ifds\\HttpAdapter\\HttpAdapterServiceProvider"
+            ],
+            "aliases": {
+                "HttpAdapter": "Ifds\\HttpAdapter\\Facades\\Adapter"
+            }
+        }
+    },
+    "scripts": {
+        "test": "pest",
+        "pint": "pint",
+        "stan": "phpstan analyse"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
