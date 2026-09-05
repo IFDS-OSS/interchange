@@ -1,6 +1,6 @@
 <?php
 
-namespace Ifds\HttpAdapter\Support;
+namespace Ifds\HttpAdapter\Enums;
 
 enum CircuitState: string
 {

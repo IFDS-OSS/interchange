@@ -2,7 +2,7 @@
 
 namespace Ifds\HttpAdapter\Events;
 
-use Ifds\HttpAdapter\Support\CircuitState;
+use Ifds\HttpAdapter\Enums\CircuitState;
 
 class CircuitStateChanged
 {

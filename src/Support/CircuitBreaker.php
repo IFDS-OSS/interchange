@@ -2,6 +2,7 @@
 
 namespace Ifds\HttpAdapter\Support;
 
+use Ifds\HttpAdapter\Enums\CircuitState;
 use Ifds\HttpAdapter\Events\CircuitStateChanged;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Carbon;

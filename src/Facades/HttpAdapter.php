@@ -2,12 +2,15 @@
 
 namespace Ifds\HttpAdapter\Facades;
 
+use Ifds\HttpAdapter\AdapterManager;
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static \Ifds\HttpAdapter\Client\AbstractApiClient driver(string $driver)
+ *
+ * @see AdapterManager
  */
-class Adapter extends Facade
+class HttpAdapter extends Facade
 {
     protected static function getFacadeAccessor(): string
     {

@@ -6,3 +6,9 @@ composer.lock
 .DS_Store
 .idea
 .php-cs-fixer.cache
+
+# Testbench / Workbench runtime artifacts
+/workbench/storage
+/.phpunit.cache
+testbench.yaml.bak
+*.sqlite
