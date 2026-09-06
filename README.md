@@ -1,7 +1,7 @@
 # Interchange
 
 [![Tests](https://github.com/IFDS-OSS/interchange/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/IFDS-OSS/interchange/actions/workflows/tests.yml)
-[![License](https://img.shields.io/github/license/IFDS-OSS/interchange.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 <!-- Restore once the package is published on Packagist:
 [![Latest Version](https://img.shields.io/packagist/v/ifds-oss/interchange.svg)](https://packagist.org/packages/ifds-oss/interchange)
