@@ -2,10 +2,7 @@
 
 [![Tests](https://github.com/IFDS-OSS/interchange/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/IFDS-OSS/interchange/actions/workflows/tests.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-
-<!-- Restore once the package is published on Packagist:
-[![Latest Version](https://img.shields.io/packagist/v/ifds-oss/interchange.svg)](https://packagist.org/packages/ifds-oss/interchange)
--->
+[![Latest Version](https://img.shields.io/packagist/v/ifds-oss/interchange.svg?include_prereleases)](https://packagist.org/packages/ifds-oss/interchange)
 
 A driver-based outbound HTTP integration layer for Laravel. Define each third-party
 API as a small **client class** with declarative endpoints, then call it through a
@@ -37,8 +34,13 @@ package extracts that into a single abstraction:
 ## Installation
 
 ```bash
-composer require ifds-oss/interchange
+composer require ifds-oss/interchange:^1.0@beta
 ```
+
+The current release is a pre-release, so Composer needs to be told the beta is
+acceptable — either with the `@beta` suffix above, or by setting
+`"minimum-stability": "beta"` in your `composer.json`. Once 1.0.0 is tagged,
+plain `composer require ifds-oss/interchange` will work.
 
 The service provider and the `Interchange` facade alias are auto-discovered. Publish
 the config file if you want to customise it:

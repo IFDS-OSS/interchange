@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-beta.1] - 2026-09-06
+
 ### Added
 - `AbstractApiClient` — fluent, driver-based outbound HTTP client with declarative
   endpoint definitions, path/query interpolation, per-endpoint mock/live switching,
@@ -22,3 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `ExtractsTolerantFields` trait for casing-tolerant parsing of inconsistent third-party APIs.
 - Laravel 13 support (`illuminate/*` `^13.0`), tested in CI on PHP 8.3 and 8.4 against
   `orchestra/testbench` `^11.0`. Laravel 11 and 12 remain supported.
+
+[Unreleased]: https://github.com/IFDS-OSS/interchange/compare/v1.0.0-beta.1...HEAD
+[1.0.0-beta.1]: https://github.com/IFDS-OSS/interchange/releases/tag/v1.0.0-beta.1
