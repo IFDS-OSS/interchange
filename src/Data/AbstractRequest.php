@@ -1,13 +1,13 @@
 <?php
 
-namespace Ifds\HttpAdapter\Data;
+namespace Ifds\Interchange\Data;
 
 use Illuminate\Support\Str;
 
 /**
  * @phpstan-consistent-constructor
  */
-abstract class AbstractAdapterRequest
+abstract class AbstractRequest
 {
     /**
      * @param  mixed  ...$args

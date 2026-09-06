@@ -1,20 +1,20 @@
 <?php
 
-namespace Ifds\HttpAdapter\Client;
+namespace Ifds\Interchange\Client;
 
 use Closure;
-use Ifds\HttpAdapter\Data\AbstractAdapterRequest;
-use Ifds\HttpAdapter\Enums\FailureReason;
-use Ifds\HttpAdapter\Events\RequestFailed;
-use Ifds\HttpAdapter\Events\RequestRetrying;
-use Ifds\HttpAdapter\Events\RequestSending;
-use Ifds\HttpAdapter\Events\ResponseReceived;
-use Ifds\HttpAdapter\Exceptions\CircuitOpenException;
-use Ifds\HttpAdapter\Exceptions\NoActiveEndpointException;
-use Ifds\HttpAdapter\Exceptions\UndefinedEndpointException;
-use Ifds\HttpAdapter\Support\CircuitBreaker;
-use Ifds\HttpAdapter\Support\DriverConfig;
-use Ifds\HttpAdapter\Support\RetryPolicy;
+use Ifds\Interchange\Data\AbstractRequest;
+use Ifds\Interchange\Enums\FailureReason;
+use Ifds\Interchange\Events\RequestFailed;
+use Ifds\Interchange\Events\RequestRetrying;
+use Ifds\Interchange\Events\RequestSending;
+use Ifds\Interchange\Events\ResponseReceived;
+use Ifds\Interchange\Exceptions\CircuitOpenException;
+use Ifds\Interchange\Exceptions\NoActiveEndpointException;
+use Ifds\Interchange\Exceptions\UndefinedEndpointException;
+use Ifds\Interchange\Support\CircuitBreaker;
+use Ifds\Interchange\Support\DriverConfig;
+use Ifds\Interchange\Support\RetryPolicy;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
@@ -96,7 +96,7 @@ abstract class AbstractApiClient
         if (isset($arguments[0])) {
             $payload = $arguments[0];
 
-            if ($payload instanceof AbstractAdapterRequest) {
+            if ($payload instanceof AbstractRequest) {
                 $this->withPayload($payload->toPayload());
             } elseif (is_array($payload)) {
                 $this->withPayload($payload);
@@ -325,7 +325,7 @@ abstract class AbstractApiClient
             return null;
         }
 
-        $store = config('http-adapter.circuit_breaker.store') ?: config('cache.default');
+        $store = config('interchange.circuit_breaker.store') ?: config('cache.default');
 
         return CircuitBreaker::fromConfig(Cache::store($store), $this->getDriverName(), $cbConfig);
     }

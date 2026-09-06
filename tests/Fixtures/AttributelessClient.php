@@ -1,8 +1,8 @@
 <?php
 
-namespace Ifds\HttpAdapter\Tests\Fixtures;
+namespace Ifds\Interchange\Tests\Fixtures;
 
-use Ifds\HttpAdapter\Client\AbstractApiClient;
+use Ifds\Interchange\Client\AbstractApiClient;
 
 /**
  * A client deliberately missing the #[Driver] attribute, used to prove the

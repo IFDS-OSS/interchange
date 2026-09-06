@@ -1,17 +1,17 @@
 <?php
 
-namespace Ifds\HttpAdapter\Support;
+namespace Ifds\Interchange\Support;
 
-use Ifds\HttpAdapter\Attributes\Driver;
-use Ifds\HttpAdapter\Client\AbstractApiClient;
-use Ifds\HttpAdapter\Exceptions\InvalidDriverConfigException;
+use Ifds\Interchange\Attributes\Driver;
+use Ifds\Interchange\Client\AbstractApiClient;
+use Ifds\Interchange\Exceptions\InvalidDriverConfigException;
 use Illuminate\Contracts\Container\Container;
 use ReflectionClass;
 
 final class DriverRegistrar
 {
     /**
-     * Build the client class configured under `http-adapter.drivers.{$name}`.
+     * Build the client class configured under `interchange.drivers.{$name}`.
      *
      * The config is read at resolve time rather than snapshotted at boot, so a
      * driver added or reconfigured later in the request (tests, feature flags,
@@ -20,7 +20,7 @@ final class DriverRegistrar
     public function resolve(Container $container, string $name): AbstractApiClient
     {
         /** @var array<string, mixed> $config */
-        $config = $container->make('config')->get("http-adapter.drivers.{$name}", []);
+        $config = $container->make('config')->get("interchange.drivers.{$name}", []);
 
         if ($config === []) {
             throw InvalidDriverConfigException::unknownDriver($name);

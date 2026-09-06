@@ -1,6 +1,6 @@
 <?php
 
-use Ifds\HttpAdapter\Events\RequestRetrying;
+use Ifds\Interchange\Events\RequestRetrying;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
@@ -59,7 +59,7 @@ it('retries a POST when the per-call override opts in', function () {
 it('does not retry when no retry policy is configured', function () {
     // Hard-reset the policy the beforeEach installed (array_replace_recursive
     // can't clear a key with an empty array).
-    config()->set('http-adapter.drivers.sample.retry', []);
+    config()->set('interchange.drivers.sample.retry', []);
     Event::fake([RequestRetrying::class]);
 
     Http::fake(['*' => Http::sequence()

@@ -1,14 +1,14 @@
 <?php
 
-namespace Ifds\HttpAdapter;
+namespace Ifds\Interchange;
 
-use Ifds\HttpAdapter\Client\AbstractApiClient;
-use Ifds\HttpAdapter\Exceptions\NoDefaultDriverException;
-use Ifds\HttpAdapter\Support\DriverRegistrar;
+use Ifds\Interchange\Client\AbstractApiClient;
+use Ifds\Interchange\Exceptions\NoDefaultDriverException;
+use Ifds\Interchange\Support\DriverRegistrar;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Manager;
 
-class AdapterManager extends Manager
+class InterchangeManager extends Manager
 {
     private DriverRegistrar $registrar;
 

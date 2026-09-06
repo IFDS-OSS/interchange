@@ -1,7 +1,7 @@
 <?php
 
-use Ifds\HttpAdapter\Exceptions\CircuitOpenException;
-use Ifds\HttpAdapter\Support\CircuitBreaker;
+use Ifds\Interchange\Exceptions\CircuitOpenException;
+use Ifds\Interchange\Support\CircuitBreaker;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;

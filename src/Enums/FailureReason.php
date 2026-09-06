@@ -1,6 +1,6 @@
 <?php
 
-namespace Ifds\HttpAdapter\Enums;
+namespace Ifds\Interchange\Enums;
 
 enum FailureReason: string
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Ifds\HttpAdapter\Tests\Fixtures;
+namespace Ifds\Interchange\Tests\Fixtures;
 
-use Ifds\HttpAdapter\Data\AbstractAdapterResponse;
+use Ifds\Interchange\Data\AbstractResponse;
 
-class SampleResponse extends AbstractAdapterResponse
+class SampleResponse extends AbstractResponse
 {
     public ?int $orderId = null;
 

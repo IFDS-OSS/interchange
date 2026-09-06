@@ -1,7 +1,7 @@
 <?php
 
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
-use Ifds\HttpAdapter\Tests\Fixtures\SampleResponse;
+use Ifds\Interchange\Tests\Fixtures\SampleResponse;
 use Illuminate\Http\Client\Response;
 
 function httpResponse(array $data, int $status = 200): Response

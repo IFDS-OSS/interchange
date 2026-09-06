@@ -1,10 +1,10 @@
 <?php
 
-namespace Ifds\HttpAdapter\Tests\Fixtures;
+namespace Ifds\Interchange\Tests\Fixtures;
 
-use Ifds\HttpAdapter\Data\AbstractAdapterRequest;
+use Ifds\Interchange\Data\AbstractRequest;
 
-class SampleRequest extends AbstractAdapterRequest
+class SampleRequest extends AbstractRequest
 {
     public function __construct(
         public ?string $firstName = null,

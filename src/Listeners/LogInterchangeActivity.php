@@ -1,16 +1,16 @@
 <?php
 
-namespace Ifds\HttpAdapter\Listeners;
+namespace Ifds\Interchange\Listeners;
 
-use Ifds\HttpAdapter\Events\CircuitStateChanged;
-use Ifds\HttpAdapter\Events\RequestFailed;
-use Ifds\HttpAdapter\Events\RequestRetrying;
-use Ifds\HttpAdapter\Events\RequestSending;
-use Ifds\HttpAdapter\Events\ResponseReceived;
+use Ifds\Interchange\Events\CircuitStateChanged;
+use Ifds\Interchange\Events\RequestFailed;
+use Ifds\Interchange\Events\RequestRetrying;
+use Ifds\Interchange\Events\RequestSending;
+use Ifds\Interchange\Events\ResponseReceived;
 use Illuminate\Support\Facades\Log;
 use Psr\Log\LoggerInterface;
 
-class LogHttpAdapterActivity
+class LogInterchangeActivity
 {
     public function onRequestSending(RequestSending $event): void
     {
@@ -74,6 +74,6 @@ class LogHttpAdapterActivity
 
     private function channel(): LoggerInterface
     {
-        return Log::channel(config('http-adapter.log_channel') ?? config('logging.default'));
+        return Log::channel(config('interchange.log_channel') ?? config('logging.default'));
     }
 }

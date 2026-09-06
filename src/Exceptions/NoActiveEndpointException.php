@@ -1,8 +1,8 @@
 <?php
 
-namespace Ifds\HttpAdapter\Exceptions;
+namespace Ifds\Interchange\Exceptions;
 
-class NoActiveEndpointException extends HttpAdapterException
+class NoActiveEndpointException extends InterchangeException
 {
     public static function make(): self
     {

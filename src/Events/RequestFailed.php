@@ -1,8 +1,8 @@
 <?php
 
-namespace Ifds\HttpAdapter\Events;
+namespace Ifds\Interchange\Events;
 
-use Ifds\HttpAdapter\Enums\FailureReason;
+use Ifds\Interchange\Enums\FailureReason;
 use Throwable;
 
 class RequestFailed

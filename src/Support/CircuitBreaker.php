@@ -1,9 +1,9 @@
 <?php
 
-namespace Ifds\HttpAdapter\Support;
+namespace Ifds\Interchange\Support;
 
-use Ifds\HttpAdapter\Enums\CircuitState;
-use Ifds\HttpAdapter\Events\CircuitStateChanged;
+use Ifds\Interchange\Enums\CircuitState;
+use Ifds\Interchange\Events\CircuitStateChanged;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Carbon;
 
@@ -121,6 +121,6 @@ final class CircuitBreaker
 
     private function cacheKey(): string
     {
-        return "http-adapter:circuit:{$this->driver}";
+        return "interchange:circuit:{$this->driver}";
     }
 }

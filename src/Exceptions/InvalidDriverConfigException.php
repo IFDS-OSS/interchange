@@ -1,17 +1,17 @@
 <?php
 
-namespace Ifds\HttpAdapter\Exceptions;
+namespace Ifds\Interchange\Exceptions;
 
-class InvalidDriverConfigException extends HttpAdapterException
+class InvalidDriverConfigException extends InterchangeException
 {
     public static function unknownDriver(string $driver): self
     {
-        return new self("Driver [{$driver}] is not registered — add it under config('http-adapter.drivers').");
+        return new self("Driver [{$driver}] is not registered — add it under config('interchange.drivers').");
     }
 
     public static function missingClient(string $driver): self
     {
-        return new self("Driver [{$driver}] is missing a 'client' entry in config('http-adapter.drivers.{$driver}').");
+        return new self("Driver [{$driver}] is missing a 'client' entry in config('interchange.drivers.{$driver}').");
     }
 
     public static function missingBaseUrl(string $driver): self

@@ -2,10 +2,10 @@
 
 namespace Workbench\App\Console\Commands;
 
-use Ifds\HttpAdapter\Enums\CircuitState;
-use Ifds\HttpAdapter\Events\CircuitStateChanged;
-use Ifds\HttpAdapter\Exceptions\CircuitOpenException;
-use Ifds\HttpAdapter\Facades\HttpAdapter;
+use Ifds\Interchange\Enums\CircuitState;
+use Ifds\Interchange\Events\CircuitStateChanged;
+use Ifds\Interchange\Exceptions\CircuitOpenException;
+use Ifds\Interchange\Facades\Interchange;
 use Illuminate\Console\Command;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Event;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Http;
 
 class CircuitDemoCommand extends Command
 {
-    protected $signature = 'http-adapter:circuit-demo';
+    protected $signature = 'interchange:circuit-demo';
 
     protected $description = 'Drive the sample driver through failures to trip the circuit breaker (exercises the CircuitState enum in a booted app).';
 
@@ -36,7 +36,7 @@ class CircuitDemoCommand extends Command
 
         foreach (range(1, 3) as $attempt) {
             try {
-                HttpAdapter::driver('sample')->showPost()->withPathParam('id', 1)->send();
+                Interchange::driver('sample')->showPost()->withPathParam('id', 1)->send();
             } catch (RequestException $e) {
                 $this->line("  attempt {$attempt}: <fg=red>failed</> ({$e->response->status()})");
             }
@@ -46,7 +46,7 @@ class CircuitDemoCommand extends Command
         $this->info('Breaker should now be OPEN — the next call must short-circuit:');
 
         try {
-            HttpAdapter::driver('sample')->showPost()->withPathParam('id', 1)->send();
+            Interchange::driver('sample')->showPost()->withPathParam('id', 1)->send();
             $this->error('  Expected the circuit to be open, but the call went through.');
 
             return self::FAILURE;

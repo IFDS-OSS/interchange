@@ -1,6 +1,6 @@
 <?php
 
-use Ifds\HttpAdapter\Support\ExtractsTolerantFields;
+use Ifds\Interchange\Support\ExtractsTolerantFields;
 
 function extractor(): object
 {

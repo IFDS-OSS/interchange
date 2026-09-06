@@ -7,7 +7,7 @@ return [
     | Log Channel
     |--------------------------------------------------------------------------
     |
-    | The log channel the default LogHttpAdapterActivity listener writes to.
+    | The log channel the default LogInterchangeActivity listener writes to.
     | Leave null to fall back to the application's default log channel.
     |
     */
@@ -40,7 +40,7 @@ return [
     | #[Driver('name')] attribute) plus its own configuration.
     |
     | 'sample' => [
-    |     'client' => \App\Adapters\SampleApiClient::class,
+    |     'client' => \App\Clients\SampleApiClient::class,
     |     'base_url' => env('SAMPLE_API_URL'),
     |     'stage_url' => 'https://jsonplaceholder.typicode.com', // used when base_url is empty
     |     'timeout' => 30,

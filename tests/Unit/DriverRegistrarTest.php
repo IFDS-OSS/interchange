@@ -1,23 +1,23 @@
 <?php
 
-use Ifds\HttpAdapter\Exceptions\InvalidDriverConfigException;
-use Ifds\HttpAdapter\Exceptions\NoDefaultDriverException;
-use Ifds\HttpAdapter\Support\DriverConfig;
-use Ifds\HttpAdapter\Tests\Fixtures\AttributelessClient;
-use Ifds\HttpAdapter\Tests\Fixtures\LateSampleApiClient;
-use Ifds\HttpAdapter\Tests\Fixtures\SampleApiClient;
+use Ifds\Interchange\Exceptions\InvalidDriverConfigException;
+use Ifds\Interchange\Exceptions\NoDefaultDriverException;
+use Ifds\Interchange\Support\DriverConfig;
+use Ifds\Interchange\Tests\Fixtures\AttributelessClient;
+use Ifds\Interchange\Tests\Fixtures\LateSampleApiClient;
+use Ifds\Interchange\Tests\Fixtures\SampleApiClient;
 
 it('resolves a correctly configured driver into its client class', function () {
     expect(sampleDriver())->toBeInstanceOf(SampleApiClient::class);
 });
 
 it('throws when the config key does not match the client #[Driver] attribute', function () {
-    config()->set('http-adapter.drivers.mismatch', [
+    config()->set('interchange.drivers.mismatch', [
         'client' => SampleApiClient::class, // declares #[Driver('sample')]
         'base_url' => 'https://jsonplaceholder.typicode.com',
     ]);
 
-    expect(fn () => app('http-adapter')->driver('mismatch'))
+    expect(fn () => app('interchange')->driver('mismatch'))
         ->toThrow(InvalidDriverConfigException::class);
 });
 
@@ -25,35 +25,35 @@ it('resolves a driver registered in config after the manager was already built',
     // Force the manager to be constructed before the driver exists in config.
     expect(sampleDriver())->toBeInstanceOf(SampleApiClient::class);
 
-    config()->set('http-adapter.drivers.late', [
+    config()->set('interchange.drivers.late', [
         'client' => LateSampleApiClient::class,
         'base_url' => 'https://jsonplaceholder.typicode.com',
     ]);
 
-    expect(app('http-adapter')->driver('late'))->toBeInstanceOf(LateSampleApiClient::class);
+    expect(app('interchange')->driver('late'))->toBeInstanceOf(LateSampleApiClient::class);
 });
 
 it('throws when the requested driver is not in the config at all', function () {
-    expect(fn () => app('http-adapter')->driver('nope'))
+    expect(fn () => app('interchange')->driver('nope'))
         ->toThrow(InvalidDriverConfigException::class);
 });
 
 it('throws when a driver has no client class configured', function () {
-    config()->set('http-adapter.drivers.clientless', [
+    config()->set('interchange.drivers.clientless', [
         'base_url' => 'https://jsonplaceholder.typicode.com',
     ]);
 
-    expect(fn () => app('http-adapter')->driver('clientless'))
+    expect(fn () => app('interchange')->driver('clientless'))
         ->toThrow(InvalidDriverConfigException::class);
 });
 
 it('throws when the client class is missing the #[Driver] attribute', function () {
-    config()->set('http-adapter.drivers.attributeless', [
+    config()->set('interchange.drivers.attributeless', [
         'client' => AttributelessClient::class,
         'base_url' => 'https://jsonplaceholder.typicode.com',
     ]);
 
-    expect(fn () => app('http-adapter')->driver('attributeless'))
+    expect(fn () => app('interchange')->driver('attributeless'))
         ->toThrow(InvalidDriverConfigException::class);
 });
 
@@ -79,6 +79,6 @@ it('exposes arbitrary driver-specific values via extra()', function () {
 });
 
 it('throws NoDefaultDriverException when no driver name is given', function () {
-    expect(fn () => app('http-adapter')->driver())
+    expect(fn () => app('interchange')->driver())
         ->toThrow(NoDefaultDriverException::class);
 });

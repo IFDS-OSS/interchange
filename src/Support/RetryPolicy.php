@@ -1,6 +1,6 @@
 <?php
 
-namespace Ifds\HttpAdapter\Support;
+namespace Ifds\Interchange\Support;
 
 use Closure;
 use Illuminate\Http\Client\ConnectionException;

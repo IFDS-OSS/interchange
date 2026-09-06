@@ -1,8 +1,8 @@
 <?php
 
-namespace Ifds\HttpAdapter\Support;
+namespace Ifds\Interchange\Support;
 
-use Ifds\HttpAdapter\Exceptions\InvalidDriverConfigException;
+use Ifds\Interchange\Exceptions\InvalidDriverConfigException;
 
 final class DriverConfig
 {
