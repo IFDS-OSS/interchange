@@ -31,8 +31,8 @@ package extracts that into a single abstraction:
 
 ## Requirements
 
-- PHP 8.2+
-- Laravel 11 or 12
+- PHP 8.2+ (PHP 8.3+ for Laravel 13)
+- Laravel 11, 12, or 13
 
 ## Installation
 

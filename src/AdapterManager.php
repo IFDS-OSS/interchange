@@ -29,7 +29,11 @@ class AdapterManager extends Manager
     }
 
     /**
-     * @param  array<int, mixed>  $parameters
+     * The key type is left open because Laravel narrowed the parent's
+     * `$parameters` docblock from `array` to `array<string, mixed>` in 13.x,
+     * and this override has to stay compatible across 11.x-13.x.
+     *
+     * @param  array<array-key, mixed>  $parameters
      * @return AbstractApiClient
      */
     public function __call($method, $parameters)
