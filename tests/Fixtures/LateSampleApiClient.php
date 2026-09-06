@@ -1,9 +1,9 @@
 <?php
 
-namespace Ifds\HttpAdapter\Tests\Fixtures;
+namespace Ifds\Interchange\Tests\Fixtures;
 
-use Ifds\HttpAdapter\Attributes\Driver;
-use Ifds\HttpAdapter\Client\AbstractApiClient;
+use Ifds\Interchange\Attributes\Driver;
+use Ifds\Interchange\Client\AbstractApiClient;
 
 /**
  * Registered in config only after the manager has already been resolved, to

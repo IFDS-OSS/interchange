@@ -1,8 +1,8 @@
 <?php
 
-namespace Ifds\HttpAdapter\Events;
+namespace Ifds\Interchange\Events;
 
-use Ifds\HttpAdapter\Enums\CircuitState;
+use Ifds\Interchange\Enums\CircuitState;
 
 class CircuitStateChanged
 {

@@ -1,10 +1,10 @@
-# HTTP Adapter
+# Interchange
 
-[![Tests](https://github.com/IFDS-OSS/http-adapter/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/IFDS-OSS/http-adapter/actions/workflows/tests.yml)
-[![License](https://img.shields.io/github/license/IFDS-OSS/http-adapter.svg)](LICENSE)
+[![Tests](https://github.com/IFDS-OSS/interchange/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/IFDS-OSS/interchange/actions/workflows/tests.yml)
+[![License](https://img.shields.io/github/license/IFDS-OSS/interchange.svg)](LICENSE)
 
 <!-- Restore once the package is published on Packagist:
-[![Latest Version](https://img.shields.io/packagist/v/ifds-oss/http-adapter.svg)](https://packagist.org/packages/ifds-oss/http-adapter)
+[![Latest Version](https://img.shields.io/packagist/v/ifds-oss/interchange.svg)](https://packagist.org/packages/ifds-oss/interchange)
 -->
 
 A driver-based outbound HTTP integration layer for Laravel. Define each third-party
@@ -37,14 +37,14 @@ package extracts that into a single abstraction:
 ## Installation
 
 ```bash
-composer require ifds-oss/http-adapter
+composer require ifds-oss/interchange
 ```
 
-The service provider and the `HttpAdapter` facade alias are auto-discovered. Publish
+The service provider and the `Interchange` facade alias are auto-discovered. Publish
 the config file if you want to customise it:
 
 ```bash
-php artisan vendor:publish --tag=http-adapter-config
+php artisan vendor:publish --tag=interchange-config
 ```
 
 ## Quick start
@@ -59,8 +59,8 @@ Extend `AbstractApiClient`, tag it with the `#[Driver]` attribute, and describe 
 endpoints. Each endpoint method name is the snake-cased array key.
 
 ```php
-use Ifds\HttpAdapter\Attributes\Driver;
-use Ifds\HttpAdapter\Client\AbstractApiClient;
+use Ifds\Interchange\Attributes\Driver;
+use Ifds\Interchange\Client\AbstractApiClient;
 
 #[Driver('sample')]
 class SampleApiClient extends AbstractApiClient
@@ -110,7 +110,7 @@ class SampleApiClient extends AbstractApiClient { /* ... */ }
 
 ### 2. Register it in config
 
-Add an entry to `config/http-adapter.php`. The config key **must** match the
+Add an entry to `config/interchange.php`. The config key **must** match the
 `#[Driver]` attribute name — a mismatch fails fast at resolution time.
 
 ```php
@@ -135,13 +135,13 @@ feature flags, runtime tenancy) resolve correctly.
 ### 3. Call it
 
 ```php
-use Ifds\HttpAdapter\Facades\HttpAdapter;
+use Ifds\Interchange\Facades\Interchange;
 
-$response = HttpAdapter::driver('sample')->posts()->send();
+$response = Interchange::driver('sample')->posts()->send();
 $data = $response->json();
 
 // Or via a convenience method on your client:
-$comments = HttpAdapter::driver('sample')->commentsFor(1);
+$comments = Interchange::driver('sample')->commentsFor(1);
 ```
 
 ## The fluent builder
@@ -149,7 +149,7 @@ $comments = HttpAdapter::driver('sample')->commentsFor(1);
 Every endpoint call returns the client so you can shape the request before `send()`:
 
 ```php
-HttpAdapter::driver('sample')
+Interchange::driver('sample')
     ->createPost($payload)          // sets the active endpoint + JSON body
     ->withPathParam('id', 1)        // interpolate {id} in the path
     ->withQueryParam('page', 2)     // ?page=2
@@ -167,8 +167,8 @@ A resolved driver is memoised for the lifetime of the manager. If you change a
 driver's config at runtime, drop the cached instance first:
 
 ```php
-config()->set('http-adapter.drivers.sample.mock_enabled', true);
-HttpAdapter::forgetDrivers();
+config()->set('interchange.drivers.sample.mock_enabled', true);
+Interchange::forgetDrivers();
 ```
 
 ## Resilience
@@ -212,7 +212,7 @@ Every call emits lifecycle events you can listen to like any Laravel event:
 | `CircuitStateChanged` | on any breaker state transition |
 
 ```php
-use Ifds\HttpAdapter\Events\RequestFailed;
+use Ifds\Interchange\Events\RequestFailed;
 
 Event::listen(RequestFailed::class, function (RequestFailed $event) {
     Sentry::captureMessage("[{$event->driver}] {$event->endpoint} failed: {$event->reason->value}");
@@ -221,8 +221,8 @@ Event::listen(RequestFailed::class, function (RequestFailed $event) {
 
 ### Default logging
 
-A built-in `LogHttpAdapterActivity` listener logs every event. It writes to
-`config('http-adapter.log_channel')`, falling back to your app's default channel.
+A built-in `LogInterchangeActivity` listener logs every event. It writes to
+`config('interchange.log_channel')`, falling back to your app's default channel.
 Disable it entirely with `'logging' => ['enabled' => false]`.
 
 ## Testing
@@ -250,7 +250,7 @@ entry always go live, even when `mock_enabled` is true.
 casing (`isSuccess` vs `IsSuccess`, `data` vs `Data`):
 
 ```php
-use Ifds\HttpAdapter\Support\ExtractsTolerantFields;
+use Ifds\Interchange\Support\ExtractsTolerantFields;
 
 class PostResult
 {
@@ -283,8 +283,8 @@ endpoint shapes under test stay realistic.
 poking at the package by hand:
 
 ```bash
-vendor/bin/testbench http-adapter:sample 1      # live call to the sample API, plus the mock path
-vendor/bin/testbench http-adapter:circuit-demo  # drive the breaker closed -> open (transport faked)
+vendor/bin/testbench interchange:sample 1      # live call to the sample API, plus the mock path
+vendor/bin/testbench interchange:circuit-demo  # drive the breaker closed -> open (transport faked)
 composer serve                                  # boot the workbench app over HTTP
 ```
 

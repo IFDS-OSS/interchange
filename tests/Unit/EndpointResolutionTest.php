@@ -1,6 +1,6 @@
 <?php
 
-use Ifds\HttpAdapter\Exceptions\UndefinedEndpointException;
+use Ifds\Interchange\Exceptions\UndefinedEndpointException;
 use Illuminate\Support\Facades\Http;
 
 it('resolves a snake_cased endpoint method to its configured URL and verb', function () {

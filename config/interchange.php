@@ -7,7 +7,7 @@ return [
     | Log Channel
     |--------------------------------------------------------------------------
     |
-    | The log channel the default LogHttpAdapterActivity listener writes to.
+    | The log channel the default LogInterchangeActivity listener writes to.
     | Leave null to fall back to the application's default log channel.
     |
     */

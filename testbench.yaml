@@ -1,7 +1,7 @@
 laravel: '@testbench'
 
 providers:
-  - Ifds\HttpAdapter\HttpAdapterServiceProvider
+  - Ifds\Interchange\InterchangeServiceProvider
   - Workbench\App\Providers\WorkbenchServiceProvider
 
 migrations:

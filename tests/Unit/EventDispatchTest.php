@@ -1,10 +1,10 @@
 <?php
 
-use Ifds\HttpAdapter\Enums\CircuitState;
-use Ifds\HttpAdapter\Events\CircuitStateChanged;
-use Ifds\HttpAdapter\Events\RequestFailed;
-use Ifds\HttpAdapter\Events\RequestSending;
-use Ifds\HttpAdapter\Events\ResponseReceived;
+use Ifds\Interchange\Enums\CircuitState;
+use Ifds\Interchange\Events\CircuitStateChanged;
+use Ifds\Interchange\Events\RequestFailed;
+use Ifds\Interchange\Events\RequestSending;
+use Ifds\Interchange\Events\ResponseReceived;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;

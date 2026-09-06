@@ -1,9 +1,9 @@
 <?php
 
-namespace Ifds\HttpAdapter\Tests;
+namespace Ifds\Interchange\Tests;
 
-use Ifds\HttpAdapter\HttpAdapterServiceProvider;
-use Ifds\HttpAdapter\Tests\Fixtures\SampleApiClient;
+use Ifds\Interchange\InterchangeServiceProvider;
+use Ifds\Interchange\Tests\Fixtures\SampleApiClient;
 use Monolog\Handler\NullHandler;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -12,7 +12,7 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
-            HttpAdapterServiceProvider::class,
+            InterchangeServiceProvider::class,
         ];
     }
 
@@ -28,7 +28,7 @@ abstract class TestCase extends Orchestra
             'handler' => NullHandler::class,
         ]);
 
-        $app['config']->set('http-adapter.drivers.sample', [
+        $app['config']->set('interchange.drivers.sample', [
             'client' => SampleApiClient::class,
             'base_url' => 'https://jsonplaceholder.typicode.com',
             'timeout' => 5,
@@ -46,8 +46,8 @@ abstract class TestCase extends Orchestra
      */
     protected function configureSampleDriver(array $overrides): void
     {
-        $existing = config('http-adapter.drivers.sample', []);
+        $existing = config('interchange.drivers.sample', []);
 
-        config()->set('http-adapter.drivers.sample', array_replace_recursive($existing, $overrides));
+        config()->set('interchange.drivers.sample', array_replace_recursive($existing, $overrides));
     }
 }

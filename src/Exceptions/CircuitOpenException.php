@@ -1,8 +1,8 @@
 <?php
 
-namespace Ifds\HttpAdapter\Exceptions;
+namespace Ifds\Interchange\Exceptions;
 
-class CircuitOpenException extends HttpAdapterException
+class CircuitOpenException extends InterchangeException
 {
     public static function forDriver(string $driver): self
     {

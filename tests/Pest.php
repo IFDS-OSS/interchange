@@ -1,7 +1,7 @@
 <?php
 
-use Ifds\HttpAdapter\Client\AbstractApiClient;
-use Ifds\HttpAdapter\Tests\TestCase;
+use Ifds\Interchange\Client\AbstractApiClient;
+use Ifds\Interchange\Tests\TestCase;
 
 uses(TestCase::class)->in('Unit');
 
@@ -10,5 +10,5 @@ uses(TestCase::class)->in('Unit');
  */
 function sampleDriver(): AbstractApiClient
 {
-    return app('http-adapter')->driver('sample');
+    return app('interchange')->driver('sample');
 }

@@ -1,10 +1,10 @@
 {
-    "name": "ifds-oss/http-adapter",
+    "name": "ifds-oss/interchange",
     "description": "Driver-based outbound HTTP integration layer for Laravel: fluent client builder, retry/backoff, circuit breaking, lifecycle events, config-driven driver registration.",
     "keywords": [
         "laravel",
         "http",
-        "adapter",
+        "http-client",
         "resilience",
         "circuit-breaker",
         "retry"
@@ -30,12 +30,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Ifds\\HttpAdapter\\": "src/"
+            "Ifds\\Interchange\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Ifds\\HttpAdapter\\Tests\\": "tests/",
+            "Ifds\\Interchange\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/",
             "Workbench\\Database\\Factories\\": "workbench/database/factories/",
             "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
@@ -44,10 +44,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Ifds\\HttpAdapter\\HttpAdapterServiceProvider"
+                "Ifds\\Interchange\\InterchangeServiceProvider"
             ],
             "aliases": {
-                "HttpAdapter": "Ifds\\HttpAdapter\\Facades\\HttpAdapter"
+                "Interchange": "Ifds\\Interchange\\Facades\\Interchange"
             }
         }
     },

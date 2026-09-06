@@ -1,8 +1,8 @@
 <?php
 
-namespace Ifds\HttpAdapter\Exceptions;
+namespace Ifds\Interchange\Exceptions;
 
-class UndefinedEndpointException extends HttpAdapterException
+class UndefinedEndpointException extends InterchangeException
 {
     public static function forKey(string $endpointKey): self
     {

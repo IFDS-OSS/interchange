@@ -1,8 +1,8 @@
 <?php
 
-namespace Ifds\HttpAdapter\Data;
+namespace Ifds\Interchange\Data;
 
-use Ifds\HttpAdapter\Support\ExtractsTolerantFields;
+use Ifds\Interchange\Support\ExtractsTolerantFields;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Str;
 use ReflectionProperty;

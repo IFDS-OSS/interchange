@@ -1,8 +1,8 @@
 <?php
 
-namespace Ifds\HttpAdapter\Tests\Fixtures;
+namespace Ifds\Interchange\Tests\Fixtures;
 
-use Ifds\HttpAdapter\Data\AbstractAdapterResponse;
+use Ifds\Interchange\Data\AbstractAdapterResponse;
 
 class SampleResponse extends AbstractAdapterResponse
 {

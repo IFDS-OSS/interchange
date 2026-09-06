@@ -1,6 +1,6 @@
 <?php
 
-use Ifds\HttpAdapter\Tests\Fixtures\SampleRequest;
+use Ifds\Interchange\Tests\Fixtures\SampleRequest;
 
 it('builds a payload with snake_cased keys from public properties', function () {
     $payload = SampleRequest::make('Ada', 'Lovelace', 3)->toPayload();

@@ -2,8 +2,8 @@
 
 namespace Workbench\App\Adapters;
 
-use Ifds\HttpAdapter\Attributes\Driver;
-use Ifds\HttpAdapter\Client\AbstractApiClient;
+use Ifds\Interchange\Attributes\Driver;
+use Ifds\Interchange\Client\AbstractApiClient;
 
 /**
  * A client for JSONPlaceholder (https://jsonplaceholder.typicode.com), the free

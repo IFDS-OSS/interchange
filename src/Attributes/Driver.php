@@ -1,6 +1,6 @@
 <?php
 
-namespace Ifds\HttpAdapter\Attributes;
+namespace Ifds\Interchange\Attributes;
 
 use Attribute;
 
