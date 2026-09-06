@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   configurable retry with backoff, and per-driver circuit breaking.
 - Config- and attribute-driven driver registry (`#[Driver('name')]` + `config/http-adapter.php`)
   resolved through an `Illuminate\Support\Manager`, so consuming apps register drivers
-  without modifying the package.
+  without modifying the package. Driver config is read at resolve time, so drivers added
+  or reconfigured after boot are picked up.
 - Lifecycle events — `RequestSending`, `RequestRetrying`, `ResponseReceived`,
   `RequestFailed`, `CircuitStateChanged` — plus a default `LogHttpAdapterActivity`
   listener writing to a configurable log channel.

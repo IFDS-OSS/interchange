@@ -3,7 +3,7 @@
 namespace Ifds\HttpAdapter\Tests;
 
 use Ifds\HttpAdapter\HttpAdapterServiceProvider;
-use Ifds\HttpAdapter\Tests\Fixtures\FakeApiClient;
+use Ifds\HttpAdapter\Tests\Fixtures\SampleApiClient;
 use Monolog\Handler\NullHandler;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -28,9 +28,9 @@ abstract class TestCase extends Orchestra
             'handler' => NullHandler::class,
         ]);
 
-        $app['config']->set('http-adapter.drivers.fake', [
-            'client' => FakeApiClient::class,
-            'base_url' => 'https://fake.test',
+        $app['config']->set('http-adapter.drivers.sample', [
+            'client' => SampleApiClient::class,
+            'base_url' => 'https://jsonplaceholder.typicode.com',
             'timeout' => 5,
             'mock_enabled' => false,
             'retry' => [],
@@ -40,14 +40,14 @@ abstract class TestCase extends Orchestra
     }
 
     /**
-     * Merge extra config into the 'fake' driver definition for a single test.
+     * Merge extra config into the 'sample' driver definition for a single test.
      *
      * @param  array<string, mixed>  $overrides
      */
-    protected function configureFakeDriver(array $overrides): void
+    protected function configureSampleDriver(array $overrides): void
     {
-        $existing = config('http-adapter.drivers.fake', []);
+        $existing = config('http-adapter.drivers.sample', []);
 
-        config()->set('http-adapter.drivers.fake', array_replace_recursive($existing, $overrides));
+        config()->set('http-adapter.drivers.sample', array_replace_recursive($existing, $overrides));
     }
 }

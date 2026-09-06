@@ -3,8 +3,9 @@
 namespace Workbench\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Workbench\App\Adapters\DemoClient;
+use Workbench\App\Adapters\SampleApiClient;
 use Workbench\App\Console\Commands\CircuitDemoCommand;
+use Workbench\App\Console\Commands\SampleApiCommand;
 
 class WorkbenchServiceProvider extends ServiceProvider
 {
@@ -18,15 +19,15 @@ class WorkbenchServiceProvider extends ServiceProvider
         // which has no cache table).
         config()->set('http-adapter.circuit_breaker.store', 'array');
 
-        // Register a demo driver so the package has something to resolve in the
-        // booted workbench app. Circuit breaker is enabled with a low threshold
-        // so the demo command can trip it quickly.
-        config()->set('http-adapter.drivers.demo', [
-            'client' => DemoClient::class,
-            'base_url' => 'https://httpbin.org',
-            'timeout' => 5,
-            'mock_enabled' => false,
-            'retry' => [],
+        // Register the sample driver so the package has something to resolve in
+        // the booted workbench app. The circuit breaker is enabled with a low
+        // threshold so the demo command can trip it quickly.
+        config()->set('http-adapter.drivers.sample', [
+            'client' => SampleApiClient::class,
+            'base_url' => env('SAMPLE_API_URL', 'https://jsonplaceholder.typicode.com'),
+            'timeout' => 10,
+            'mock_enabled' => env('SAMPLE_API_MOCK', false),
+            'retry' => ['times' => 2, 'backoff_ms' => 200],
             'circuit_breaker' => ['enabled' => true, 'failure_threshold' => 3, 'cooldown_seconds' => 30],
             'extra' => [],
         ]);
@@ -39,6 +40,7 @@ class WorkbenchServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
+                SampleApiCommand::class,
                 CircuitDemoCommand::class,
             ]);
         }

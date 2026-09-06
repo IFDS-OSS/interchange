@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static \Ifds\HttpAdapter\Client\AbstractApiClient driver(string $driver)
+ * @method static \Ifds\HttpAdapter\AdapterManager forgetDrivers()
  *
  * @see AdapterManager
  */

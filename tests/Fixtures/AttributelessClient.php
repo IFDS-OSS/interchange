@@ -13,7 +13,7 @@ class AttributelessClient extends AbstractApiClient
     protected function defineEndpoints(): array
     {
         return [
-            'ping' => ['method' => 'GET', 'path' => '/ping'],
+            'posts' => ['method' => 'GET', 'path' => '/posts'],
         ];
     }
 }

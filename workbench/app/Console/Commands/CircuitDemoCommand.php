@@ -15,7 +15,7 @@ class CircuitDemoCommand extends Command
 {
     protected $signature = 'http-adapter:circuit-demo';
 
-    protected $description = 'Drive the demo driver through failures to trip the circuit breaker (exercises the CircuitState enum in a booted app).';
+    protected $description = 'Drive the sample driver through failures to trip the circuit breaker (exercises the CircuitState enum in a booted app).';
 
     public function handle(): int
     {
@@ -32,11 +32,11 @@ class CircuitDemoCommand extends Command
         // Force every upstream call to fail so the breaker trips.
         Http::fake(['*' => Http::response(['error' => true], 500)]);
 
-        $this->info('Sending failing requests through the "demo" driver (threshold: 3)...');
+        $this->info('Sending failing requests through the "sample" driver (threshold: 3)...');
 
         foreach (range(1, 3) as $attempt) {
             try {
-                HttpAdapter::driver('demo')->status()->withPathParam('code', 500)->send();
+                HttpAdapter::driver('sample')->showPost()->withPathParam('id', 1)->send();
             } catch (RequestException $e) {
                 $this->line("  attempt {$attempt}: <fg=red>failed</> ({$e->response->status()})");
             }
@@ -46,7 +46,7 @@ class CircuitDemoCommand extends Command
         $this->info('Breaker should now be OPEN — the next call must short-circuit:');
 
         try {
-            HttpAdapter::driver('demo')->status()->withPathParam('code', 500)->send();
+            HttpAdapter::driver('sample')->showPost()->withPathParam('id', 1)->send();
             $this->error('  Expected the circuit to be open, but the call went through.');
 
             return self::FAILURE;

@@ -18,13 +18,7 @@ class HttpAdapterServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/http-adapter.php', 'http-adapter');
 
-        $this->app->singleton(AdapterManager::class, function ($app) {
-            $manager = new AdapterManager($app);
-
-            (new DriverRegistrar)->registerFromConfig($manager, $app, $app['config']->get('http-adapter.drivers', []));
-
-            return $manager;
-        });
+        $this->app->singleton(AdapterManager::class, fn ($app) => new AdapterManager($app, new DriverRegistrar));
 
         $this->app->alias(AdapterManager::class, 'http-adapter');
     }

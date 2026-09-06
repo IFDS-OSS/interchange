@@ -12,7 +12,7 @@ it('logs to the explicitly configured http-adapter.log_channel', function () {
     Log::shouldReceive('channel')->once()->with('my-channel')->andReturn($logger);
 
     (new LogHttpAdapterActivity)->onRequestSending(
-        new RequestSending('fake', 'ping', 'GET', 'https://fake.test/ping', null, [])
+        new RequestSending('sample', 'posts', 'GET', 'https://jsonplaceholder.typicode.com/posts', null, [])
     );
 
     $logger->shouldHaveReceived('info')->once();
@@ -26,7 +26,7 @@ it('falls back to the application default channel when log_channel is null', fun
     Log::shouldReceive('channel')->once()->with('stack')->andReturn($logger);
 
     (new LogHttpAdapterActivity)->onRequestSending(
-        new RequestSending('fake', 'ping', 'GET', 'https://fake.test/ping', null, [])
+        new RequestSending('sample', 'posts', 'GET', 'https://jsonplaceholder.typicode.com/posts', null, [])
     );
 
     $logger->shouldHaveReceived('info')->once();

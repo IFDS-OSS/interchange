@@ -46,6 +46,10 @@ php artisan vendor:publish --tag=http-adapter-config
 
 ## Quick start
 
+The examples below integrate [JSONPlaceholder](https://jsonplaceholder.typicode.com),
+a free public sample REST API — the same one the test suite and the workbench app use,
+so you can copy any of this and run it as-is.
+
 ### 1. Write a client for the API
 
 Extend `AbstractApiClient`, tag it with the `#[Driver]` attribute, and describe its
@@ -55,33 +59,50 @@ endpoints. Each endpoint method name is the snake-cased array key.
 use Ifds\HttpAdapter\Attributes\Driver;
 use Ifds\HttpAdapter\Client\AbstractApiClient;
 
-#[Driver('postex')]
-class PostexClient extends AbstractApiClient
+#[Driver('sample')]
+class SampleApiClient extends AbstractApiClient
 {
     protected function defineEndpoints(): array
     {
         return [
-            'quotes' => [
-                'method' => 'POST',
-                'path'   => '/api/v1/quotes',
-            ],
-            'tracking' => [
+            'posts' => [
                 'method' => 'GET',
-                'path'   => '/api/v1/tracking/{code}',
+                'path'   => '/posts',
+            ],
+            'show_post' => [
+                'method' => 'GET',
+                'path'   => '/posts/{id}',
+            ],
+            'create_post' => [
+                'method' => 'POST',
+                'path'   => '/posts',
             ],
         ];
     }
 
     // Optional: a typed convenience method over the generic builder.
-    public function trackingFor(string $code): array
+    public function commentsFor(int $postId): array
     {
-        return $this->tracking()
-            ->withPathParam('code', $code)
+        return $this->showPost()
+            ->withPathParam('id', $postId)
             ->withHeaders(['x-api-key' => $this->config->extra('api_key')])
             ->send()
             ->json();
     }
 }
+```
+
+Endpoint methods are resolved through `__call`, so static analysers can't see them.
+Declare them on the class if you run PHPStan/Psalm:
+
+```php
+/**
+ * @method $this posts()
+ * @method $this showPost()
+ * @method $this createPost(array|AbstractAdapterRequest $payload = [])
+ */
+#[Driver('sample')]
+class SampleApiClient extends AbstractApiClient { /* ... */ }
 ```
 
 ### 2. Register it in config
@@ -91,29 +112,33 @@ Add an entry to `config/http-adapter.php`. The config key **must** match the
 
 ```php
 'drivers' => [
-    'postex' => [
-        'client'    => \App\Adapters\PostexClient::class,
-        'base_url'  => env('POSTEX_API_URL'),
-        'stage_url' => 'https://stage.postex.ir',   // fallback when base_url is empty
+    'sample' => [
+        'client'    => \App\Adapters\SampleApiClient::class,
+        'base_url'  => env('SAMPLE_API_URL'),
+        'stage_url' => 'https://jsonplaceholder.typicode.com', // fallback when base_url is empty
         'timeout'   => 30,
-        'mock_enabled' => env('POSTEX_MOCK', false),
+        'mock_enabled' => env('SAMPLE_API_MOCK', false),
         'retry' => ['times' => 3, 'backoff_ms' => 200],
         'circuit_breaker' => ['enabled' => true, 'failure_threshold' => 5, 'cooldown_seconds' => 30],
-        'extra' => ['api_key' => env('POSTEX_API_KEY')],
+        'extra' => ['api_key' => env('SAMPLE_API_KEY')],
     ],
 ],
 ```
+
+Driver config is read from the container's config repository **at resolve time**, not
+snapshotted at boot, so drivers registered later in the request lifecycle (tests,
+feature flags, runtime tenancy) resolve correctly.
 
 ### 3. Call it
 
 ```php
 use Ifds\HttpAdapter\Facades\HttpAdapter;
 
-$response = HttpAdapter::driver('postex')->quotes(['weight' => 500])->send();
+$response = HttpAdapter::driver('sample')->posts()->send();
 $data = $response->json();
 
 // Or via a convenience method on your client:
-$tracking = HttpAdapter::driver('postex')->trackingFor('ABC123');
+$comments = HttpAdapter::driver('sample')->commentsFor(1);
 ```
 
 ## The fluent builder
@@ -121,9 +146,9 @@ $tracking = HttpAdapter::driver('postex')->trackingFor('ABC123');
 Every endpoint call returns the client so you can shape the request before `send()`:
 
 ```php
-HttpAdapter::driver('postex')
-    ->quotes($payload)              // sets the active endpoint + JSON body
-    ->withPathParam('code', 'X1')   // interpolate {code} in the path
+HttpAdapter::driver('sample')
+    ->createPost($payload)          // sets the active endpoint + JSON body
+    ->withPathParam('id', 1)        // interpolate {id} in the path
     ->withQueryParam('page', 2)     // ?page=2
     ->withHeaders(['x-api-key' => '...'])
     ->setTimeout(10)                // per-call timeout override
@@ -134,6 +159,14 @@ HttpAdapter::driver('postex')
 
 Endpoint methods accept either an array or an `AbstractAdapterRequest` DTO as their
 first argument; a DTO is converted to a snake-cased payload automatically.
+
+A resolved driver is memoised for the lifetime of the manager. If you change a
+driver's config at runtime, drop the cached instance first:
+
+```php
+config()->set('http-adapter.drivers.sample.mock_enabled', true);
+HttpAdapter::forgetDrivers();
+```
 
 ## Resilience
 
@@ -191,19 +224,20 @@ Disable it entirely with `'logging' => ['enabled' => false]`.
 
 ## Testing
 
-Flip `mock_enabled` (or set the `{DRIVER}_MOCK` env var) and any endpoint with a `mock`
+Flip `mock_enabled` (or set the driver's mock env var) and any endpoint with a `mock`
 entry serves its canned response with no network call:
 
 ```php
-'quotes' => [
+'create_post' => [
     'method' => 'POST',
-    'path'   => '/api/v1/quotes',
-    'mock'   => fn (array $payload, array $headers) => ['price' => 1000],
+    'path'   => '/posts',
+    'mock'   => fn (array $payload, array $headers) => ['id' => 101] + $payload,
 ],
 ```
 
 The mock may be an array, an `Illuminate\Http\Client\Response`, or a closure returning
-either. Mock data lives in your app, never in this package.
+either. Mock data lives in your app, never in this package. Endpoints without a `mock`
+entry always go live, even when `mock_enabled` is true.
 
 ## DTOs & tolerant parsing
 
@@ -215,7 +249,7 @@ casing (`isSuccess` vs `IsSuccess`, `data` vs `Data`):
 ```php
 use Ifds\HttpAdapter\Support\ExtractsTolerantFields;
 
-class QuoteResult
+class PostResult
 {
     use ExtractsTolerantFields;
 
@@ -235,6 +269,29 @@ composer test     # Pest via Orchestra Testbench
 composer pint     # format
 composer stan     # PHPStan / Larastan
 ```
+
+The suite never touches the network — every test stubs the transport with
+`Http::fake()` — but the fixture client models the JSONPlaceholder sample API so the
+endpoint shapes under test stay realistic.
+
+### Workbench
+
+`workbench/` is a real, booted Laravel app that registers the same sample driver, for
+poking at the package by hand:
+
+```bash
+vendor/bin/testbench http-adapter:sample 1      # live call to the sample API, plus the mock path
+vendor/bin/testbench http-adapter:circuit-demo  # drive the breaker closed -> open (transport faked)
+composer serve                                  # boot the workbench app over HTTP
+```
+
+### A note on the Laravel 11 CI matrix
+
+Laravel 11 is past its security-fix window, so every 11.x release now carries an open
+advisory and Composer refuses to install it by default. The package still supports and
+tests 11.x; the CI job opts that ephemeral checkout out of the block with
+`composer config --no-plugins audit.block-insecure false`. Your own applications should
+leave that check on.
 
 ## License
 
