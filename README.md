@@ -1,8 +1,11 @@
 # HTTP Adapter
 
-[![Tests](https://github.com/ifds-oss/http-adapter/actions/workflows/tests.yml/badge.svg)](https://github.com/ifds-oss/http-adapter/actions/workflows/tests.yml)
+[![Tests](https://github.com/IFDS-OSS/http-adapter/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/IFDS-OSS/http-adapter/actions/workflows/tests.yml)
+[![License](https://img.shields.io/github/license/IFDS-OSS/http-adapter.svg)](LICENSE)
+
+<!-- Restore once the package is published on Packagist:
 [![Latest Version](https://img.shields.io/packagist/v/ifds-oss/http-adapter.svg)](https://packagist.org/packages/ifds-oss/http-adapter)
-[![License](https://img.shields.io/packagist/l/ifds-oss/http-adapter.svg)](LICENSE)
+-->
 
 A driver-based outbound HTTP integration layer for Laravel. Define each third-party
 API as a small **client class** with declarative endpoints, then call it through a
