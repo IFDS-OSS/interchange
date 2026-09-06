@@ -1,6 +1,6 @@
 <?php
 
-namespace Workbench\App\Adapters;
+namespace Workbench\App\Clients;
 
 use Ifds\Interchange\Attributes\Driver;
 use Ifds\Interchange\Client\AbstractApiClient;

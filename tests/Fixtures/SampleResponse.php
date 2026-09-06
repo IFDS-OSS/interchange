@@ -2,9 +2,9 @@
 
 namespace Ifds\Interchange\Tests\Fixtures;
 
-use Ifds\Interchange\Data\AbstractAdapterResponse;
+use Ifds\Interchange\Data\AbstractResponse;
 
-class SampleResponse extends AbstractAdapterResponse
+class SampleResponse extends AbstractResponse
 {
     public ?int $orderId = null;
 

@@ -3,7 +3,7 @@
 namespace Ifds\Interchange\Client;
 
 use Closure;
-use Ifds\Interchange\Data\AbstractAdapterRequest;
+use Ifds\Interchange\Data\AbstractRequest;
 use Ifds\Interchange\Enums\FailureReason;
 use Ifds\Interchange\Events\RequestFailed;
 use Ifds\Interchange\Events\RequestRetrying;
@@ -96,7 +96,7 @@ abstract class AbstractApiClient
         if (isset($arguments[0])) {
             $payload = $arguments[0];
 
-            if ($payload instanceof AbstractAdapterRequest) {
+            if ($payload instanceof AbstractRequest) {
                 $this->withPayload($payload->toPayload());
             } elseif (is_array($payload)) {
                 $this->withPayload($payload);

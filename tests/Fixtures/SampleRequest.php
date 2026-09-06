@@ -2,9 +2,9 @@
 
 namespace Ifds\Interchange\Tests\Fixtures;
 
-use Ifds\Interchange\Data\AbstractAdapterRequest;
+use Ifds\Interchange\Data\AbstractRequest;
 
-class SampleRequest extends AbstractAdapterRequest
+class SampleRequest extends AbstractRequest
 {
     public function __construct(
         public ?string $firstName = null,

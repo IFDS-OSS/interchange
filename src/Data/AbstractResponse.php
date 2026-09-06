@@ -10,7 +10,7 @@ use ReflectionProperty;
 /**
  * @phpstan-consistent-constructor
  */
-abstract class AbstractAdapterResponse
+abstract class AbstractResponse
 {
     use ExtractsTolerantFields;
 

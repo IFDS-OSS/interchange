@@ -40,7 +40,7 @@ return [
     | #[Driver('name')] attribute) plus its own configuration.
     |
     | 'sample' => [
-    |     'client' => \App\Adapters\SampleApiClient::class,
+    |     'client' => \App\Clients\SampleApiClient::class,
     |     'base_url' => env('SAMPLE_API_URL'),
     |     'stage_url' => 'https://jsonplaceholder.typicode.com', // used when base_url is empty
     |     'timeout' => 30,

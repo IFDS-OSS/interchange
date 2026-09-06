@@ -18,9 +18,9 @@ class InterchangeServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/interchange.php', 'interchange');
 
-        $this->app->singleton(AdapterManager::class, fn ($app) => new AdapterManager($app, new DriverRegistrar));
+        $this->app->singleton(InterchangeManager::class, fn ($app) => new InterchangeManager($app, new DriverRegistrar));
 
-        $this->app->alias(AdapterManager::class, 'interchange');
+        $this->app->alias(InterchangeManager::class, 'interchange');
     }
 
     public function boot(): void

@@ -8,7 +8,7 @@ use Ifds\Interchange\Support\DriverRegistrar;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Manager;
 
-class AdapterManager extends Manager
+class InterchangeManager extends Manager
 {
     private DriverRegistrar $registrar;
 

@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 /**
  * @phpstan-consistent-constructor
  */
-abstract class AbstractAdapterRequest
+abstract class AbstractRequest
 {
     /**
      * @param  mixed  ...$args

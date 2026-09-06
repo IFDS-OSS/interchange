@@ -3,7 +3,7 @@
 namespace Workbench\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Workbench\App\Adapters\SampleApiClient;
+use Workbench\App\Clients\SampleApiClient;
 use Workbench\App\Console\Commands\CircuitDemoCommand;
 use Workbench\App\Console\Commands\SampleApiCommand;
 

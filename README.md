@@ -102,7 +102,7 @@ Declare them on the class if you run PHPStan/Psalm:
 /**
  * @method $this posts()
  * @method $this showPost()
- * @method $this createPost(array|AbstractAdapterRequest $payload = [])
+ * @method $this createPost(array|AbstractRequest $payload = [])
  */
 #[Driver('sample')]
 class SampleApiClient extends AbstractApiClient { /* ... */ }
@@ -116,7 +116,7 @@ Add an entry to `config/interchange.php`. The config key **must** match the
 ```php
 'drivers' => [
     'sample' => [
-        'client'    => \App\Adapters\SampleApiClient::class,
+        'client'    => \App\Clients\SampleApiClient::class,
         'base_url'  => env('SAMPLE_API_URL'),
         'stage_url' => 'https://jsonplaceholder.typicode.com', // fallback when base_url is empty
         'timeout'   => 30,
@@ -160,7 +160,7 @@ Interchange::driver('sample')
     ->send();                       // returns Illuminate\Http\Client\Response
 ```
 
-Endpoint methods accept either an array or an `AbstractAdapterRequest` DTO as their
+Endpoint methods accept either an array or an `AbstractRequest` DTO as their
 first argument; a DTO is converted to a snake-cased payload automatically.
 
 A resolved driver is memoised for the lifetime of the manager. If you change a
@@ -244,7 +244,7 @@ entry always go live, even when `mock_enabled` is true.
 
 ## DTOs & tolerant parsing
 
-`AbstractAdapterRequest` (reflection-based `toPayload()`) and `AbstractAdapterResponse`
+`AbstractRequest` (reflection-based `toPayload()`) and `AbstractResponse`
 (`fromHttpResponse()` mapping) give you typed request/response objects. The
 `ExtractsTolerantFields` trait helps parse third-party APIs with inconsistent key
 casing (`isSuccess` vs `IsSuccess`, `data` vs `Data`):

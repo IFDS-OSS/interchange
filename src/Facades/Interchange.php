@@ -2,14 +2,14 @@
 
 namespace Ifds\Interchange\Facades;
 
-use Ifds\Interchange\AdapterManager;
+use Ifds\Interchange\InterchangeManager;
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static \Ifds\Interchange\Client\AbstractApiClient driver(string $driver)
- * @method static \Ifds\Interchange\AdapterManager forgetDrivers()
+ * @method static \Ifds\Interchange\InterchangeManager forgetDrivers()
  *
- * @see AdapterManager
+ * @see InterchangeManager
  */
 class Interchange extends Facade
 {

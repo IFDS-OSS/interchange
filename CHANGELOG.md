@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Lifecycle events — `RequestSending`, `RequestRetrying`, `ResponseReceived`,
   `RequestFailed`, `CircuitStateChanged` — plus a default `LogInterchangeActivity`
   listener writing to a configurable log channel.
-- `AbstractAdapterRequest` / `AbstractAdapterResponse` base DTOs and the
+- `AbstractRequest` / `AbstractResponse` base DTOs and the
   `ExtractsTolerantFields` trait for casing-tolerant parsing of inconsistent third-party APIs.
 - Laravel 13 support (`illuminate/*` `^13.0`), tested in CI on PHP 8.3 and 8.4 against
   `orchestra/testbench` `^11.0`. Laravel 11 and 12 remain supported.
