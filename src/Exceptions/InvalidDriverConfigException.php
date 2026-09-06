@@ -4,6 +4,11 @@ namespace Ifds\HttpAdapter\Exceptions;
 
 class InvalidDriverConfigException extends HttpAdapterException
 {
+    public static function unknownDriver(string $driver): self
+    {
+        return new self("Driver [{$driver}] is not registered — add it under config('http-adapter.drivers').");
+    }
+
     public static function missingClient(string $driver): self
     {
         return new self("Driver [{$driver}] is missing a 'client' entry in config('http-adapter.drivers.{$driver}').");

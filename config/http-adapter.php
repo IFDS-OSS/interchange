@@ -39,15 +39,15 @@ return [
     | to the client class implementing it (which must declare a matching
     | #[Driver('name')] attribute) plus its own configuration.
     |
-    | 'postex' => [
-    |     'client' => \App\Adapters\PostexClient::class,
-    |     'base_url' => env('POSTEX_API_URL'),
-    |     'stage_url' => 'https://stage.postex.ir',
+    | 'sample' => [
+    |     'client' => \App\Adapters\SampleApiClient::class,
+    |     'base_url' => env('SAMPLE_API_URL'),
+    |     'stage_url' => 'https://jsonplaceholder.typicode.com', // used when base_url is empty
     |     'timeout' => 30,
-    |     'mock_enabled' => env('POSTEX_MOCK', false),
+    |     'mock_enabled' => env('SAMPLE_API_MOCK', false),
     |     'retry' => ['times' => 3, 'backoff_ms' => 200],
     |     'circuit_breaker' => ['enabled' => true, 'failure_threshold' => 5, 'cooldown_seconds' => 30],
-    |     'extra' => ['api_key' => env('POSTEX_API_KEY')],
+    |     'extra' => ['api_key' => env('SAMPLE_API_KEY')],
     | ],
     |
     */

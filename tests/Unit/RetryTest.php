@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
-    $this->configureFakeDriver(['retry' => ['times' => 3, 'backoff_ms' => 0]]);
+    $this->configureSampleDriver(['retry' => ['times' => 3, 'backoff_ms' => 0]]);
 });
 
 it('retries an idempotent GET on a 5xx and returns the eventual success', function () {
@@ -16,7 +16,7 @@ it('retries an idempotent GET on a 5xx and returns the eventual success', functi
         ->push(['error' => true], 500)
         ->push(['ok' => true], 200)]);
 
-    $response = fakeDriver()->unstableGet()->send();
+    $response = sampleDriver()->posts()->send();
 
     expect($response->successful())->toBeTrue()
         ->and($response->json())->toBe(['ok' => true]);
@@ -32,7 +32,7 @@ it('does not retry a non-idempotent POST by default', function () {
         ->push(['error' => true], 500)
         ->push(['ok' => true], 200)]);
 
-    expect(fn () => fakeDriver()->unstablePost(['name' => 'widget'])->send())
+    expect(fn () => sampleDriver()->createPost(['title' => 'widget'])->send())
         ->toThrow(RequestException::class);
 
     Http::assertSentCount(1);
@@ -46,7 +46,7 @@ it('retries a POST when the per-call override opts in', function () {
         ->push(['error' => true], 500)
         ->push(['ok' => true], 200)]);
 
-    $response = fakeDriver()->unstablePost(['name' => 'widget'])
+    $response = sampleDriver()->createPost(['title' => 'widget'])
         ->withRetry(times: 3, backoffMs: 0)
         ->send();
 
@@ -59,14 +59,14 @@ it('retries a POST when the per-call override opts in', function () {
 it('does not retry when no retry policy is configured', function () {
     // Hard-reset the policy the beforeEach installed (array_replace_recursive
     // can't clear a key with an empty array).
-    config()->set('http-adapter.drivers.fake.retry', []);
+    config()->set('http-adapter.drivers.sample.retry', []);
     Event::fake([RequestRetrying::class]);
 
     Http::fake(['*' => Http::sequence()
         ->push(['error' => true], 500)
         ->push(['ok' => true], 200)]);
 
-    expect(fn () => fakeDriver()->unstableGet()->send())
+    expect(fn () => sampleDriver()->posts()->send())
         ->toThrow(RequestException::class);
 
     Http::assertSentCount(1);

@@ -2,8 +2,8 @@
 
 namespace Ifds\HttpAdapter\Support;
 
-use Ifds\HttpAdapter\AdapterManager;
 use Ifds\HttpAdapter\Attributes\Driver;
+use Ifds\HttpAdapter\Client\AbstractApiClient;
 use Ifds\HttpAdapter\Exceptions\InvalidDriverConfigException;
 use Illuminate\Contracts\Container\Container;
 use ReflectionClass;
@@ -11,25 +11,38 @@ use ReflectionClass;
 final class DriverRegistrar
 {
     /**
-     * @param  array<string, array<string, mixed>>  $driversConfig
+     * Build the client class configured under `http-adapter.drivers.{$name}`.
+     *
+     * The config is read at resolve time rather than snapshotted at boot, so a
+     * driver added or reconfigured later in the request (tests, feature flags,
+     * runtime tenancy) is picked up.
      */
-    public function registerFromConfig(AdapterManager $manager, Container $app, array $driversConfig): void
+    public function resolve(Container $container, string $name): AbstractApiClient
     {
-        foreach ($driversConfig as $name => $config) {
-            $manager->extend($name, function ($app) use ($name, $config) {
-                $class = $config['client'] ?? null;
+        /** @var array<string, mixed> $config */
+        $config = $container->make('config')->get("http-adapter.drivers.{$name}", []);
 
-                if (! $class) {
-                    throw InvalidDriverConfigException::missingClient($name);
-                }
-
-                $this->assertAttributeMatches($class, $name);
-
-                return $app->make($class)->configure(DriverConfig::fromArray($name, $config));
-            });
+        if ($config === []) {
+            throw InvalidDriverConfigException::unknownDriver($name);
         }
+
+        $class = $config['client'] ?? null;
+
+        if (! is_string($class) || $class === '') {
+            throw InvalidDriverConfigException::missingClient($name);
+        }
+
+        $this->assertAttributeMatches($class, $name);
+
+        /** @var AbstractApiClient $client */
+        $client = $container->make($class);
+
+        return $client->configure(DriverConfig::fromArray($name, $config));
     }
 
+    /**
+     * @param  class-string  $class
+     */
     private function assertAttributeMatches(string $class, string $name): void
     {
         $reflection = new ReflectionClass($class);

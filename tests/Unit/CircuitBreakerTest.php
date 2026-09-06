@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
-    $this->configureFakeDriver([
+    $this->configureSampleDriver([
         'circuit_breaker' => ['enabled' => true, 'failure_threshold' => 3, 'cooldown_seconds' => 30],
     ]);
 });
@@ -20,7 +20,7 @@ afterEach(function () {
 function failOnce(): void
 {
     try {
-        fakeDriver()->unstableGet()->send();
+        sampleDriver()->posts()->send();
     } catch (RequestException) {
         // swallow; the breaker records the failure
     }
@@ -35,7 +35,7 @@ it('trips open after the failure threshold and short-circuits further calls', fu
 
     Http::assertSentCount(3);
 
-    expect(fn () => fakeDriver()->unstableGet()->send())
+    expect(fn () => sampleDriver()->posts()->send())
         ->toThrow(CircuitOpenException::class);
 
     // The short-circuited call never reached the network.
@@ -59,15 +59,15 @@ it('moves to half-open after the cooldown and closes again on a successful trial
     failOnce();
     failOnce();
 
-    expect(fn () => fakeDriver()->unstableGet()->send())->toThrow(CircuitOpenException::class);
+    expect(fn () => sampleDriver()->posts()->send())->toThrow(CircuitOpenException::class);
 
     Carbon::setTestNow(now()->addSeconds(31));
 
-    $trial = fakeDriver()->unstableGet()->send();
+    $trial = sampleDriver()->posts()->send();
     expect($trial->successful())->toBeTrue();
 
     // Closed again: a subsequent call also passes through.
-    $again = fakeDriver()->unstableGet()->send();
+    $again = sampleDriver()->posts()->send();
     expect($again->successful())->toBeTrue();
 
     // 3 trip + 1 trial + 1 follow-up; the open-state call never reached the network.
@@ -88,12 +88,12 @@ it('reopens when the half-open trial fails again', function () {
     failOnce();
 
     // ...so the breaker is open again and short-circuits.
-    expect(fn () => fakeDriver()->unstableGet()->send())
+    expect(fn () => sampleDriver()->posts()->send())
         ->toThrow(CircuitOpenException::class);
 });
 
 it('never trips when the circuit breaker is disabled', function () {
-    $this->configureFakeDriver(['circuit_breaker' => ['enabled' => false]]);
+    $this->configureSampleDriver(['circuit_breaker' => ['enabled' => false]]);
     Http::fake(['*' => Http::response(['error' => true], 500)]);
 
     failOnce();
@@ -102,7 +102,7 @@ it('never trips when the circuit breaker is disabled', function () {
     failOnce();
 
     // No CircuitOpenException — every call reached the network.
-    expect(fn () => fakeDriver()->unstableGet()->send())->toThrow(RequestException::class);
+    expect(fn () => sampleDriver()->posts()->send())->toThrow(RequestException::class);
     Http::assertSentCount(5);
 });
 
@@ -114,7 +114,7 @@ it('bypasses an enabled breaker for a single call via withoutCircuitBreaker()', 
     failOnce();
 
     // Breaker is open, but this call opts out and reaches the network (then fails normally).
-    expect(fn () => fakeDriver()->unstableGet()->withoutCircuitBreaker()->send())
+    expect(fn () => sampleDriver()->posts()->withoutCircuitBreaker()->send())
         ->toThrow(RequestException::class);
 
     Http::assertSentCount(4);

@@ -13,24 +13,24 @@ it('dispatches RequestSending and ResponseReceived on a successful live call', f
     Event::fake([RequestSending::class, ResponseReceived::class]);
     Http::fake(['*' => Http::response(['ok' => true], 200)]);
 
-    fakeDriver()->ping()->send();
+    sampleDriver()->posts()->send();
 
-    Event::assertDispatched(RequestSending::class, fn (RequestSending $e) => $e->driver === 'fake'
-        && $e->endpoint === 'ping'
+    Event::assertDispatched(RequestSending::class, fn (RequestSending $e) => $e->driver === 'sample'
+        && $e->endpoint === 'posts'
         && $e->method === 'GET'
-        && $e->url === 'https://fake.test/ping');
+        && $e->url === 'https://jsonplaceholder.typicode.com/posts');
 
-    Event::assertDispatched(ResponseReceived::class, fn (ResponseReceived $e) => $e->driver === 'fake'
-        && $e->endpoint === 'ping'
+    Event::assertDispatched(ResponseReceived::class, fn (ResponseReceived $e) => $e->driver === 'sample'
+        && $e->endpoint === 'posts'
         && $e->mocked === false
         && $e->response->status() === 200);
 });
 
 it('marks ResponseReceived as mocked when the mock path is taken', function () {
-    $this->configureFakeDriver(['mock_enabled' => true]);
+    $this->configureSampleDriver(['mock_enabled' => true]);
     Event::fake([ResponseReceived::class]);
 
-    fakeDriver()->echoPayload(['a' => 1])->send();
+    sampleDriver()->createPost(['a' => 1])->send();
 
     Event::assertDispatched(ResponseReceived::class, fn (ResponseReceived $e) => $e->mocked === true);
 });
@@ -40,16 +40,16 @@ it('dispatches RequestFailed with a server-error reason on a 5xx', function () {
     Http::fake(['*' => Http::response(['error' => true], 500)]);
 
     try {
-        fakeDriver()->unstableGet()->send();
+        sampleDriver()->posts()->send();
     } catch (RequestException) {
     }
 
-    Event::assertDispatched(RequestFailed::class, fn (RequestFailed $e) => $e->endpoint === 'unstable_get'
+    Event::assertDispatched(RequestFailed::class, fn (RequestFailed $e) => $e->endpoint === 'posts'
         && $e->reason->value === 'server_error');
 });
 
 it('dispatches CircuitStateChanged when the breaker trips', function () {
-    $this->configureFakeDriver([
+    $this->configureSampleDriver([
         'circuit_breaker' => ['enabled' => true, 'failure_threshold' => 2, 'cooldown_seconds' => 30],
     ]);
     Event::fake([CircuitStateChanged::class]);
@@ -57,12 +57,12 @@ it('dispatches CircuitStateChanged when the breaker trips', function () {
 
     foreach (range(1, 2) as $i) {
         try {
-            fakeDriver()->unstableGet()->send();
+            sampleDriver()->posts()->send();
         } catch (RequestException) {
         }
     }
 
-    Event::assertDispatched(CircuitStateChanged::class, fn (CircuitStateChanged $e) => $e->driver === 'fake'
+    Event::assertDispatched(CircuitStateChanged::class, fn (CircuitStateChanged $e) => $e->driver === 'sample'
         && $e->from === CircuitState::Closed
         && $e->to === CircuitState::Open);
 });
