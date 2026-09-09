@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-09-09
+
+### Changed
+- First stable release. No changes since `1.0.0-beta.1`.
+
 ## [1.0.0-beta.1] - 2026-09-06
 
 ### Added
@@ -25,5 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Laravel 13 support (`illuminate/*` `^13.0`), tested in CI on PHP 8.3 and 8.4 against
   `orchestra/testbench` `^11.0`. Laravel 11 and 12 remain supported.
 
-[Unreleased]: https://github.com/IFDS-OSS/interchange/compare/v1.0.0-beta.1...HEAD
+[Unreleased]: https://github.com/IFDS-OSS/interchange/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/IFDS-OSS/interchange/compare/v1.0.0-beta.1...v1.0.0
 [1.0.0-beta.1]: https://github.com/IFDS-OSS/interchange/releases/tag/v1.0.0-beta.1

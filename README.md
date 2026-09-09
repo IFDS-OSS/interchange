@@ -34,13 +34,8 @@ package extracts that into a single abstraction:
 ## Installation
 
 ```bash
-composer require ifds-oss/interchange:^1.0@beta
+composer require ifds-oss/interchange
 ```
-
-The current release is a pre-release, so Composer needs to be told the beta is
-acceptable — either with the `@beta` suffix above, or by setting
-`"minimum-stability": "beta"` in your `composer.json`. Once 1.0.0 is tagged,
-plain `composer require ifds-oss/interchange` will work.
 
 The service provider and the `Interchange` facade alias are auto-discovered. Publish
 the config file if you want to customise it:
